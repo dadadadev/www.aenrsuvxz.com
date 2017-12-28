@@ -1,0 +1,55 @@
+.postView {
+  position: relative;
+  top: 20px;
+  height: 100%;
+  width: 100vw;
+  min-width: 320px;
+  overflow: hidden;
+  &_content {
+    position: relative;
+    height: 100%;
+  }
+  &_contentTitle {
+    box-sizing: border-box;
+    padding: 0 8%;
+  }
+  &_contentInfoArea {
+    display: flex;
+    flex-direction: row;
+  }
+  &_contentPagination {
+    position: relative;
+    left: 20px;
+  }
+  &_contentBody {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  &_contentTextArea {
+    width: 84%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &_contentText {
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    columns: 84vw;
+    column-gap: 65px;
+    @media (min-width: 769px) {
+      columns: 2;
+    }
+  }
+  &_contentShiftBtn {
+    width: 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-hidden {
+      visibility :hidden;
+    }
+  }
+}

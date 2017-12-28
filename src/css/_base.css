@@ -1,0 +1,92 @@
+@font-face {
+  font-family: "Lato";
+  src: url('https://www.aenrsuvxz.com/Lato-Regular.ttf') format('truetype');
+}
+body {
+  color: #1C1C1C;
+  background-color: #fffefb;
+  background-image: url(https://www.aenrsuvxz.com/paper.png);
+}
+svg {
+  vertical-align: bottom;
+  pointer-events: none;
+}
+a {
+  text-decoration: none;
+  color: #1C1C1C;
+}
+a h2,
+a time{
+  pointer-events: none;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.defs {
+  display: none;
+}
+.hidden {
+  visibility: hidden;
+}
+.container {
+  position: relative;
+  height: 100vh;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+.innerContainer {
+  position: relative;
+  top: 30px;
+  height: calc(100vh - 60px);
+  width: 300vw;
+  display: flex;
+  flex-direction: row;
+}
+.innerContainer-listView {
+  left: -100vw;
+}
+.innerContainer-postView {
+  left: -200vw;
+}
+.title {
+  color: #1C1C1C;
+  margin: 0;
+  font-size: 14px;
+  font-family: "Lato", Midashi Go MB31, sans-serif;
+  line-height: 1.5;
+  font-feature-settings: "palt";
+  letter-spacing: 1px;
+  text-align: justify;
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+.text {
+  color: #1C1C1C;
+  font-size: 12px;
+  font-family: "Lato", Gothic Medium BBB, sans-serif;
+  line-height: 2.5;
+  font-feature-settings: "palt";
+  letter-spacing: 1.5px;
+  text-align: justify;
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+}
+.info {
+  color: #605e5e;
+  font-size: 10px;
+  font-family: "Lato", Gothic Medium BBB, sans-serif;
+  line-height: 2.5;
+  font-feature-settings: "palt";
+  letter-spacing: 1px;
+  text-align: justify;
+  @media (min-width: 768px) {
+    font-size: 12px;
+  }
+}
+.text p {
+  margin: 0 0 15px;
+}

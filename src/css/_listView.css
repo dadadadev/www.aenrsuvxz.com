@@ -1,0 +1,38 @@
+.listView {
+  position: relative;
+  height: 100%;
+  width: 100vw;
+  min-width: 320px;
+  top: 25px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  &_items {
+    position: relative;
+    width: 100vw;
+    padding-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &_item {
+    width: 80vw;
+    margin: 0 0 50px;
+    display: block;
+    @media (min-width: 568px) {
+      width: 60vw;
+    }
+    &::after {
+      content: "読む >>";
+      display: block;
+      font-family: 'Gothic Medium BBB', sans-serif;
+      color: #1C1C1C;
+      font-size: 10px;
+      border-top: 1px solid #1C1C1C;
+      padding-top: 3px;
+      height: 14px;
+      width: 100%;
+      text-align: center;
+      line-height: 14px;
+    }
+  }
+}

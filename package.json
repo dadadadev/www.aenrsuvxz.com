@@ -1,0 +1,35 @@
+{
+  "name": "aenrsuvxz_local_dev",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "postcss": "postcss src/css/input.css -o public_html/style.css -w",
+    "rollup": "rollup -c -w",
+    "lite-server": "lite-server --baseDir='public_html'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lite-server": "^2.3.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^7.2.3",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "postcss-cli": "^4.1.1",
+    "postcss-import": "^11.0.0",
+    "postcss-nested": "^3.0.0",
+    "rollup": "^0.52.2",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "smoothscroll-polyfill": "^0.4.0",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
