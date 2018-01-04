@@ -4,23 +4,6 @@ import router from './router'
 
 export const getPath = () => window.location.pathname;
 
-// export const isTouch = () => {
-//   const isTouchFlag = ('ontouchstart' in window) ? true : false;
-//   return isTouchFlag;
-// }
-// export const isTap = isTouch => {
-//   let flag = isTouch,
-//       isTapFlag = true;
-//   if (isTouch) {
-//     window.addEventListener('touchstart', e => { isTapFlag = true });
-//     window.addEventListener('touchmove', e => { isTapFlag = false });
-//     window.addEventListener('touchend', e => { isTapFlag ? isTapFlag = true : isTapFlag = false });
-//   } else {
-//     isTapFlag = 'click';
-//   }
-//   return isTapFlag;
-// }
-
 export const showFront= () => {
   $.topBar.classList.add('topBar-hidden');
   $.innerContainer.classList.remove('innerContainer-listView');

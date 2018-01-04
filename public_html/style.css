@@ -461,15 +461,20 @@ ul {
 }
   }
 .text p {
-  margin: 0 0 15px;
+  margin: 0 0 18px;
 }
+@media (min-width: 768px) {
+.text p {
+    margin: 0 0 25px
+}
+  }
 .topBar {
   position: absolute;
   top: 0;
   width: 100vw;
   min-width: 320px;
   height: 30px;
-  padding: 0 10vw;
+  padding: 0 8vw;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   background-color: #FFF;

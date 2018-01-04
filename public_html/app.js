@@ -889,23 +889,6 @@ var bottomBar_navSign = document.getElementById('bottomBar_navSign');
 var bottomBar_navBtn = document.getElementById('bottomBar_navBtn');
 var bottomBar_navBtnContent = document.getElementById('bottomBar_navBtnContent');
 
-// export const isTouch = () => {
-//   const isTouchFlag = ('ontouchstart' in window) ? true : false;
-//   return isTouchFlag;
-// }
-// export const isTap = isTouch => {
-//   let flag = isTouch,
-//       isTapFlag = true;
-//   if (isTouch) {
-//     window.addEventListener('touchstart', e => { isTapFlag = true });
-//     window.addEventListener('touchmove', e => { isTapFlag = false });
-//     window.addEventListener('touchend', e => { isTapFlag ? isTapFlag = true : isTapFlag = false });
-//   } else {
-//     isTapFlag = 'click';
-//   }
-//   return isTapFlag;
-// }
-
 var showFront = function showFront() {
   topBar.classList.add('topBar-hidden');
   innerContainer.classList.remove('innerContainer-listView');
@@ -1197,19 +1180,14 @@ var router = (function (state) {
   } else if (state.view === 'list') {
     fetchList(state.path);
     showList();
-    // setTimeout(() => {Ts.reload()}, 1000);
   } else if (state.view === 'post') {
     fetchPost(state.path);
     showPost();
-    // setTimeout(() => {Ts.reload()}, 1000);
   } else {
     return;
   }
 
   if (state.category === 'performance') showTopBarPerformance();else if (state.category === 'architecture') showTopBarArchitecture();else if (state.category === 'uiux') showTopBarUiux();
-
-  console.log('router for ↓');
-  console.log(state);
 });
 
 var eventListen = (function () {

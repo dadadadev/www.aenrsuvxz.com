@@ -88,5 +88,8 @@ ul {
   }
 }
 .text p {
-  margin: 0 0 15px;
+  margin: 0 0 18px;
+  @media (min-width: 768px) {
+    margin: 0 0 25px;
+  }
 }
