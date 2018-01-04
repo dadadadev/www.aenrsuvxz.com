@@ -94,6 +94,7 @@ export const fetchPost = path => {
   fetch(`https://api.aenrsuvxz.com${path}.json`)
     .then(res => res.json())
     .then(json => {
+      document.title = `${json.title} - www.aenrsuvxz.com`;
       $.postView_contentTitleArea.innerText = json.title;
       $.postView_contentTimeArea.innerText = `更新日： ${json.date}`;
       $.postView_contentTimeArea.setAttribute('datetime', json.date);

@@ -1002,6 +1002,7 @@ var fetchPost = function fetchPost(path) {
   fetch('https://api.aenrsuvxz.com' + path + '.json').then(function (res) {
     return res.json();
   }).then(function (json) {
+    document.title = json.title + ' - www.aenrsuvxz.com';
     postView_contentTitleArea.innerText = json.title;
     postView_contentTimeArea.innerText = '\u66F4\u65B0\u65E5\uFF1A ' + json.date;
     postView_contentTimeArea.setAttribute('datetime', json.date);
