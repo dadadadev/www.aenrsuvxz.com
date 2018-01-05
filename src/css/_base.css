@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Lato";
-  src: url('https://www.aenrsuvxz.com/Lato-Regular.ttf') format('truetype');
+  font-family: 'Lato';
+  src: url(https://www.aenrsuvxz.com/Lato-Regular.ttf) format('truetype');
 }
 body {
   color: #1C1C1C;
@@ -54,7 +54,7 @@ ul {
   color: #1C1C1C;
   margin: 0;
   font-size: 14px;
-  font-family: "Lato", Midashi Go MB31, sans-serif;
+  font-family: 'Lato', Midashi Go MB31, sans-serif;
   line-height: 1.5;
   font-feature-settings: "palt";
   letter-spacing: 1px;
@@ -66,7 +66,7 @@ ul {
 .text {
   color: #1C1C1C;
   font-size: 12px;
-  font-family: "Lato", Gothic Medium BBB, sans-serif;
+  font-family: 'Lato', Gothic Medium BBB, sans-serif;
   line-height: 2.5;
   font-feature-settings: "palt";
   letter-spacing: 1.5px;
@@ -78,7 +78,7 @@ ul {
 .info {
   color: #605e5e;
   font-size: 10px;
-  font-family: "Lato", Gothic Medium BBB, sans-serif;
+  font-family: 'Lato', Gothic Medium BBB, sans-serif;
   line-height: 2.5;
   font-feature-settings: "palt";
   letter-spacing: 1px;

@@ -4,7 +4,7 @@ import setState from './setState';
 import router from './router';
 import eventListen from './eventListen';
 
-// lisence
+/* @license smoothscroll v0.4.0 - 2017 - Dustan Kasten, Jeremias Menichelli - MIT License */
 smoothscroll.polyfill();
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -24,7 +24,7 @@
     &::after {
       content: "読む >>";
       display: block;
-      font-family: 'Gothic Medium BBB', sans-serif;
+      font-family: "Gothic Medium BBB", sans-serif;
       color: #1C1C1C;
       font-size: 10px;
       border-top: 1px solid #1C1C1C;

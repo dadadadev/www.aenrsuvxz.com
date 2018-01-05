@@ -4,6 +4,6 @@ module.exports = ctx => ({
     'postcss-nested': {},
     // 'postcss-custom-properties': {},
     'autoprefixer': {},
-    'cssnano': ctx.env === 'production' ? { autoprefixer: false } : false
+    'cssnano': ctx.env === 'production' ? { autoprefixer: false, normalizeUrl: { stripWWW: false } } : false
   }
 })

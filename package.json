@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "postcss": "postcss src/css/input.css -o dev-server/style.css -w",
-    "rollup": "rollup -c -w",
-    "development": "lite-server --baseDir='dev-server'",
-    "production": "postcss src/css/input.css -o public_html/style.css -e production",
+    "postcss-dev": "postcss src/css/input.css -o dev-server/style.css -w",
+    "postcss-build": "postcss src/css/input.css -o public_html/style.css -e production",
+    "rollup-dev": "rollup -c -i src/js/input.js -o dev-server/app.js -w",
+    "rollup-build": "rollup -c -i src/js/input.js -o public_html/app.js --environment NODE_ENV:production",
+    "dev-server": "lite-server --baseDir='dev-server'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,6 +24,7 @@
     "autoprefixer": "^7.2.3",
     "babel-core": "^6.26.0",
     "babel-preset-es2015-rollup": "^3.0.0",
+    "cssnano": "^3.10.0",
     "postcss-cli": "^4.1.1",
     "postcss-import": "^11.0.0",
     "postcss-nested": "^3.0.0",
@@ -30,7 +32,9 @@
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "smoothscroll-polyfill": "^0.4.0",
+    "uglify-es": "^3.3.4",
     "whatwg-fetch": "^2.0.3"
   }
 }
