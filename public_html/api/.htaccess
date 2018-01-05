@@ -1,6 +1,0 @@
-SetEnvIf Host "^api.aenrsuvxz.com$" host
-order deny,allow
-deny from all
-allow from env=host
-
-Header append Access-Control-Allow-Origin: *
