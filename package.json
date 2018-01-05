@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "postcss": "postcss src/css/input.css -o public_html/style.css -w",
+    "postcss": "postcss src/css/input.css -o dev-server/style.css -w",
     "rollup": "rollup -c -w",
-    "lite-server": "lite-server --baseDir='public_html'",
+    "development": "lite-server --baseDir='dev-server'",
+    "production": "postcss src/css/input.css -o public_html/style.css -e production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "dadada.dev",
+  "license": "MIT",
   "dependencies": {
     "lite-server": "^2.3.0"
   },
