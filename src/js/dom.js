@@ -83,10 +83,13 @@ export const fetchList = path => {
     }
     $.listView.scrollTo(0, 0);
     $.listView_items.appendChild(fragment);
-  }).
-  then(() => {
-    Ts.reload();
-    setTimeout(() => { $.listView.classList.remove('hidden') }, 500);
+  })
+  .then(() =>  {
+    const tsCompRes = res => {
+      res.code === 0 ? $.listView.classList.remove('hidden') : false
+    };
+    Ts.onComplete(tsCompRes);
+    Ts.reload()
   })
 }
 export const fetchPost = path => {
@@ -108,14 +111,18 @@ export const fetchPost = path => {
       $.postView_contentCurrentPage.classList.remove('defs');
       $.postView_contentTotalPage.classList.remove('defs');
       $.postView_contentText.scrollTo(0, 0);
-
+    })
+    .then(() => {
+      const tsCompRes = res => {
+        res.code === 0 ? $.postView.classList.remove('hidden') : false
+      };
+      Ts.onComplete(tsCompRes);
+      Ts.reload();
+    })
+    .then(() => {
       setPostAreaHeight();
       setTotalPage();
       postScrollBtnBehavior();
-    })
-    .then(() => {
-      Ts.reload();
-      setTimeout(() => { $.postView.classList.remove('hidden') }, 500);
     })
 }
 
