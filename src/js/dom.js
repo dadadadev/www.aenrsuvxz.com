@@ -94,6 +94,7 @@ export const fetchList = path => {
 }
 export const fetchPost = path => {
   $.postView.classList.add('hidden');
+  currentPage = 1;
   fetch(`https://api.aenrsuvxz.com${path}.json`)
     .then(res => res.json())
     .then(json => {
