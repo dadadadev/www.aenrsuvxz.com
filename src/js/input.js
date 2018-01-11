@@ -12,4 +12,4 @@ document.addEventListener('DOMContentLoaded', () => {
   window.history.replaceState(state, null, state.path);
   eventListen();
   router(state);
-})
+});

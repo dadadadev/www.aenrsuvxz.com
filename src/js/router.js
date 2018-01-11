@@ -16,4 +16,4 @@ export default (state) => {
   if (state.category === 'performance') $dom.showTopBarPerformance();
   else if (state.category === 'architecture') $dom.showTopBarArchitecture();
   else if (state.category === 'uiux') $dom.showTopBarUiux();
-}
+};
