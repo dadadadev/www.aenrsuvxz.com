@@ -1,7 +1,7 @@
 import setState from './setState';
 import router from './router';
 
-export const $ = id => {
+export const $ = (id) => {
   const el = document.getElementById(id);
   return el;
 };
@@ -40,7 +40,7 @@ export const showTopBarUiux = () => {
   $('topBar_categoryItems').classList.remove('topBar_categoryItems-performance', 'topBar_categoryItems-architecture');
 };
 
-export const toggleModal = e => {
+export const toggleModal = (e) => {
   e.stopPropagation();
   $('bottomBar_navBtnContent').classList.toggle('bottomBar_navBtnContent-modal');
   $('bottomBar').classList.toggle('bottomBar-modal');
@@ -59,51 +59,106 @@ export const fetchList = (path) => {
     .then(res => res.json())
     .then((json) => {
       for (let post of json.list) {
-      const li = document.createElement('li'),
-            a = document.createElement('a'),
-            h2 = document.createElement('h2'),
-            time = document.createElement('time');
-      a.href = post.path;
-      a.classList.add('listView_item');
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        const targetPath = e.target.getAttribute('href'),
-              targetState = setState(targetPath);
-        window.history.pushState(targetState, null, targetState.path);
-        router(targetState);
-      })
-      h2.classList.add('title');
-      h2.innerText = post.title;
-      time.classList.add('info');
-      time.innerText = `更新日： ${post.date}`;
-      time.setAttribute('datetime', post.date);
-      a.appendChild(h2);
-      a.appendChild(time);
-      li.appendChild(a);
-      fragment.appendChild(li);
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        const h2 = document.createElement('h2');
+        const time = document.createElement('time');
+        a.href = post.path;
+        a.classList.add('listView_item');
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetPath = e.target.getAttribute('href');
+          const targetState = setState(targetPath);
+          window.history.pushState(targetState, null, targetState.path);
+          router(targetState);
+        });
+        h2.classList.add('title');
+        h2.innerText = post.title;
+        time.classList.add('info');
+        time.innerText = `更新日： ${post.date}`;
+        time.setAttribute('datetime', post.date);
+        a.appendChild(h2);
+        a.appendChild(time);
+        li.appendChild(a);
+        fragment.appendChild(li);
+      }
+      while ($('listView_items').firstChild) {
+        $('listView_items').removeChild($('listView_items').firstChild);
+      }
+      $('listView').scrollTo(0, 0);
+      $('listView_items').appendChild(fragment);
+    })
+    .then(() => {
+      const tsCompRes = (res) => {
+        res.code === 0 ? $('listView').classList.remove('hidden') : false
+        res.code === -2 ? $('listView').classList.remove('hidden') : false
+      };
+      Ts.onComplete(tsCompRes);
+      Ts.reload();
+    });
+};
+
+const isTouch = ('ontouchstart' in window) ? {} : false;
+
+let isTap = true;
+let ready = true;
+let currentPage = 1;
+let totalPages = 1;
+
+const setPostAreaHeight = () => {
+  const titleHeight = $('postView_contentTitle').clientHeight;
+  $('postView_contentText').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+  $('postView_contentShiftBtnPrev').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+  $('postView_contentShiftBtnNext').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+};
+const setTotalPage = () => {
+  const scrollWidth = $('postView_contentText').scrollWidth;
+  const viewAreaWidth = $('postView_contentText').clientWidth + 65;
+  const restWidth = scrollWidth % viewAreaWidth;
+  const _scrollWidth = scrollWidth - restWidth;
+  const totalPage = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
+  $('postView_contentTotalPage').innerText = ` / ${totalPage}`;
+  totalPages = totalPage;
+};
+const postScrollBtnBehavior = () => {
+  setTimeout(() => {
+    const scrollPosition = $('postView_contentText').scrollLeft;
+    const contentWidth = $('postView_contentText').clientWidth;
+    const scrollWidth = $('postView_contentText').scrollWidth;
+    const targetWidth = scrollPosition + contentWidth + 50;
+    if (scrollPosition === 0) {
+      $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+    } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
+      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+    } else {
+      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
     }
-    while ($('listView_items').firstChild) {
-      $('listView_items').removeChild($('listView_items').firstChild);
-    }
-    $('listView').scrollTo(0, 0);
-    $('listView_items').appendChild(fragment);
-  })
-  .then(() =>  {
-    const tsCompRes = res => {
-      console.log(res.code);
-      res.code === 0 ? $('listView').classList.remove('hidden') : false
-      res.code === -2 ? $('listView').classList.remove('hidden') : false
-    };
-    Ts.onComplete(tsCompRes);
-    Ts.reload()
-  })
-}
-export const fetchPost = path => {
+  }, 1000);
+};
+const scrollNext = () => {
+  $.postView_contentText.scrollBy({
+    behavior: 'smooth',
+    top: 0,
+    left: $('postView_contentText').clientWidth + 65,
+  });
+};
+const scrollPrev = () => {
+  $.postView_contentText.scrollBy({
+    behavior: 'smooth',
+    top: 0,
+    left: -($('postView_contentText').clientWidth + 65),
+  });
+};
+
+export const fetchPost = (path) => {
   $('postView').classList.add('hidden');
   currentPage = 1;
   fetch(`https://api.aenrsuvxz.com${path}.json`)
     .then(res => res.json())
-    .then(json => {
+    .then((json) => {
       document.title = `${json.title} - www.aenrsuvxz.com`;
       $('postView_contentTitleArea').innerText = json.title;
       $('postView_contentTimeArea').innerText = `更新日： ${json.date}`;
@@ -120,7 +175,7 @@ export const fetchPost = path => {
       $('postView_contentText').scrollTo(0, 0);
     })
     .then(() => {
-      const tsCompRes = res => {
+      const tsCompRes = (res) => {
         res.code === 0 ? $('postView').classList.remove('hidden') : false
         res.code === -2 ? $('postView').classList.remove('hidden') : false
       };
@@ -131,15 +186,8 @@ export const fetchPost = path => {
       setPostAreaHeight();
       setTotalPage();
       postScrollBtnBehavior();
-    })
-}
-
-const isTouch = ('ontouchstart' in window) ? true : false;
-
-let isTap = true,
-    ready = true,
-    currentPage = 1,
-    totalPages = 1;
+    });
+};
 
 window.addEventListener('touchstart', e => { isTap = true });
 window.addEventListener('touchmove', e => { isTap = false });
@@ -168,15 +216,16 @@ $('postView_contentShiftBtnPrev').addEventListener(isTouch ? 'touchend' : 'click
   }
 });
 if (isTouch) {
-  let touchStartX, touchMoveX;
-  $('postView_contentText').addEventListener('touchstart', e => {
+  let touchStartX;
+  let touchMoveX;
+  $('postView_contentText').addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].pageX;
-  })
-  $('postView_contentText').addEventListener('touchmove', e => {
+  });
+  $('postView_contentText').addEventListener('touchmove', (e) => {
     touchMoveX = e.changedTouches[0].pageX;
     if (Math.abs(touchMoveX - touchStartX) > 10) e.preventDefault()
-  })
-  $('postView_contentText').addEventListener('touchend', e => {
+  });
+  $('postView_contentText').addEventListener('touchend', (e) => {
     if (touchStartX > touchMoveX && ready) {
       if (touchStartX > (touchMoveX + 30)) {
         if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
@@ -185,8 +234,8 @@ if (isTouch) {
         ready = false;
         setTimeout(() => {
           ready = true;
-        }, 1000)
-        }
+        }, 1000);
+      }
     } else if (touchStartX < touchMoveX && ready) {
       if ((touchStartX + 30) < touchMoveX) {
         if (currentPage > 1) $('postView_contentCurrentPage').innerText = currentPage -= 1;
@@ -195,12 +244,12 @@ if (isTouch) {
         ready = false;
         setTimeout(() => {
           ready = true;
-        }, 1000)
+        }, 1000);
       }
     }
   });
 } else {
-  $('postView_contentText').addEventListener('wheel', e => {
+  $('postView_contentText').addEventListener('wheel', (e) => {
     e.preventDefault();
     if (e.deltaX > 20 && ready) {
       if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
@@ -218,58 +267,6 @@ if (isTouch) {
       setTimeout(() => {
         ready = true;
       }, 1000);
-    } else {
-      return;
     }
-  });
-}
-
-const setPostAreaHeight = () => {
-  const titleHeight = $('postView_contentTitle').clientHeight;
-  $('postView_contentText').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-  $('postView_contentShiftBtnPrev').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-  $('postView_contentShiftBtnNext').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-}
-const setTotalPage = () => {
-  const scrollWidth = $('postView_contentText').scrollWidth,
-        viewAreaWidth = $('postView_contentText').clientWidth + 65,
-        restWidth = scrollWidth % viewAreaWidth,
-        _scrollWidth = scrollWidth - restWidth,
-        totalPage = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
-  $('postView_contentTotalPage').innerText = ` / ${totalPage}`;
-  totalPages = totalPage;
-}
-const postScrollBtnBehavior = () => {
-  setTimeout(() => {
-    const scrollPosition = $('postView_contentText').scrollLeft;
-    const contentWidth = $('postView_contentText').clientWidth;
-    const scrollWidth = $('postView_contentText').scrollWidth;
-    const targetWidth = scrollPosition + contentWidth + 50;
-    if (contentWidth === scrollWidth) {
-      return;
-    } else if (scrollPosition === 0) {
-      $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
-    }
-  }, 1000);
-}
-const scrollNext = () => {
-  $.postView_contentText.scrollBy({
-    behavior: 'smooth',
-    top: 0,
-    left: $('postView_contentText').clientWidth + 65
-  })
-}
-const scrollPrev = () => {
-  $.postView_contentText.scrollBy({
-    behavior: 'smooth',
-    top: 0,
-    left: -($('postView_contentText').clientWidth + 65)
   });
 }

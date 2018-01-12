@@ -5,4 +5,4 @@ module.exports = ctx => ({
     'autoprefixer': {},
     'cssnano': ctx.env === 'production' ? { autoprefixer: false, normalizeUrl: { stripWWW: false } } : false
   }
-})
+});

@@ -15,7 +15,6 @@ export default {
         var text = comment.value;
         var type = comment.type;
         if (type == "comment2") {
-          // multiline comment
           return /@preserve|@license|@cc_on/i.test(text);
         }
       }
