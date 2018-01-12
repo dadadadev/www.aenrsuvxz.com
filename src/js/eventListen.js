@@ -1,5 +1,4 @@
 import setState from './setState';
-import * as $ from './selectors';
 import router from './router';
 import * as $dom from './dom';
 
@@ -37,13 +36,13 @@ export default () => {
         }
       }
 
-  $.bottomBar_navBtn.addEventListener(isTouch ? 'touchend' : 'click', (e) => {
+  $dom.$('bottomBar_navBtn').addEventListener(isTouch ? 'touchend' : 'click', (e) => {
     if (isTap) $dom.toggleModal(e);
   });
-  $.bottomBar_navSign.addEventListener(isTouch ? 'touchend' : 'click', (e) => {
+  $dom.$('bottomBar_navSign').addEventListener(isTouch ? 'touchend' : 'click', (e) => {
     if (isTap) $dom.toggleModal(e);
   });
-  $.bottomBar.addEventListener(isTouch ? 'touchend' : 'click', () => {
+  $dom.$('bottomBar').addEventListener(isTouch ? 'touchend' : 'click', () => {
     if (isTap) $dom.closeModal();
   });
 };
