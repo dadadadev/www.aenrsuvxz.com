@@ -6,6 +6,61 @@ export const $ = (id) => {
   return el;
 };
 
+const isTouch = ('ontouchstart' in window) ? {} : false;
+
+let isTap = true;
+let ready = true;
+let currentPage = 1;
+let totalPages = 1;
+
+const setPostAreaHeight = () => {
+  const titleHeight = $('postView_contentTitle').clientHeight;
+  $('postView_contentText').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+  $('postView_contentShiftBtnPrev').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+  $('postView_contentShiftBtnNext').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
+};
+const setTotalPage = () => {
+  const scrollWidth = $('postView_contentText').scrollWidth;
+  const viewAreaWidth = $('postView_contentText').clientWidth + 65;
+  const restWidth = scrollWidth % viewAreaWidth;
+  const _scrollWidth = scrollWidth - restWidth;
+  const totalPage = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
+  $('postView_contentTotalPage').innerText = ` / ${totalPage}`;
+  totalPages = totalPage;
+};
+const postScrollBtnBehavior = () => {
+  setTimeout(() => {
+    const scrollPosition = $('postView_contentText').scrollLeft;
+    const contentWidth = $('postView_contentText').clientWidth;
+    const scrollWidth = $('postView_contentText').scrollWidth;
+    const targetWidth = scrollPosition + contentWidth + 50;
+    if (scrollPosition === 0) {
+      $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+    } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
+      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+    } else {
+      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+      $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
+    }
+  }, 1000);
+};
+const scrollNext = () => {
+  $('postView_contentText').scrollBy({
+    behavior: 'smooth',
+    top: 0,
+    left: $('postView_contentText').clientWidth + 65,
+  });
+};
+const scrollPrev = () => {
+  $('postView_contentText').scrollBy({
+    behavior: 'smooth',
+    top: 0,
+    left: -($('postView_contentText').clientWidth + 65),
+  });
+};
+
 export const getPath = () => window.location.pathname;
 
 export const showFront = () => {
@@ -96,61 +151,6 @@ export const fetchList = (path) => {
       Ts.onComplete(tsCompRes);
       Ts.reload();
     });
-};
-
-const isTouch = ('ontouchstart' in window) ? {} : false;
-
-let isTap = true;
-let ready = true;
-let currentPage = 1;
-let totalPages = 1;
-
-const setPostAreaHeight = () => {
-  const titleHeight = $('postView_contentTitle').clientHeight;
-  $('postView_contentText').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-  $('postView_contentShiftBtnPrev').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-  $('postView_contentShiftBtnNext').style.cssText += `height: calc(100vh - ${titleHeight}px - 115px);`;
-};
-const setTotalPage = () => {
-  const scrollWidth = $('postView_contentText').scrollWidth;
-  const viewAreaWidth = $('postView_contentText').clientWidth + 65;
-  const restWidth = scrollWidth % viewAreaWidth;
-  const _scrollWidth = scrollWidth - restWidth;
-  const totalPage = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
-  $('postView_contentTotalPage').innerText = ` / ${totalPage}`;
-  totalPages = totalPage;
-};
-const postScrollBtnBehavior = () => {
-  setTimeout(() => {
-    const scrollPosition = $('postView_contentText').scrollLeft;
-    const contentWidth = $('postView_contentText').clientWidth;
-    const scrollWidth = $('postView_contentText').scrollWidth;
-    const targetWidth = scrollPosition + contentWidth + 50;
-    if (scrollPosition === 0) {
-      $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
-    }
-  }, 1000);
-};
-const scrollNext = () => {
-  $.postView_contentText.scrollBy({
-    behavior: 'smooth',
-    top: 0,
-    left: $('postView_contentText').clientWidth + 65,
-  });
-};
-const scrollPrev = () => {
-  $.postView_contentText.scrollBy({
-    behavior: 'smooth',
-    top: 0,
-    left: -($('postView_contentText').clientWidth + 65),
-  });
 };
 
 export const fetchPost = (path) => {
