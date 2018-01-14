@@ -9,11 +9,13 @@ export default (state) => {
   } else if (state.view === 'post') {
     $dom.fetchPost(state.path);
     $dom.showPost();
-  } else {
-    return;
+  } else if (state.view === '404') {
+    $dom.showError();
   }
 
   if (state.category === 'performance') $dom.showTopBarPerformance();
   else if (state.category === 'architecture') $dom.showTopBarArchitecture();
   else if (state.category === 'uiux') $dom.showTopBarUiux();
+
+  console.log(state);
 };

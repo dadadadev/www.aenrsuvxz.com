@@ -31,8 +31,8 @@ export default (path) => {
     state.path = path;
   } else {
     state.view = '404';
-    state.category = null;
-    state.path = '404';
+    state.category = '404';
+    state.path = path;
   }
   return state;
 };

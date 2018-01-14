@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run postcss:dev | npm run rollup:dev | npm run server:dev",
+    "start": "npm run server:start | npm run postcss:start | npm run rollup:start",
     "build": "npm run postcss:build && npm run rollup:build",
-    "postcss:dev": "postcss src/css/input.css -o dev-server/style.css -w",
-    "rollup:dev": "rollup -c -i src/js/input.js -o dev-server/app.js -w",
-    "server:dev": "lite-server --baseDir='dev-server'",
+    "server:start": "lite-server --baseDir='dev-server'",
+    "postcss:start": "postcss src/css/input.css -o dev-server/style.css -w",
+    "rollup:start": "rollup -c -i src/js/input.js -o dev-server/app.js -w",
     "postcss:build": "NODE_ENV=production postcss src/css/input.css -o dist/style.css",
     "rollup:build": "NODE_ENV=production rollup -c -i src/js/input.js -o dist/app.js",
     "lint": "eslint src/js/*.js"

@@ -1,14 +1,10 @@
 import setState from './setState';
 import router from './router';
+import { $, isTouch, isTap } from './util';
 
-export const $ = (id) => {
-  const el = document.getElementById(id);
-  return el;
-};
+// const isTouch = ('ontouchstart' in window) ? {} : false;
 
-const isTouch = ('ontouchstart' in window) ? {} : false;
-
-let isTap = true;
+// let isTap = true;
 let ready = true;
 let currentPage = 1;
 let totalPages = 1;
@@ -61,25 +57,35 @@ const scrollPrev = () => {
   });
 };
 
-export const getPath = () => window.location.pathname;
+// export const getPath = () => window.location.pathname;
 
 export const showFront = () => {
   $('topBar').classList.add('topBar-hidden');
   $('innerContainer').classList.remove('innerContainer-listView');
   $('innerContainer').classList.remove('innerContainer-postView');
+  $('innerContainer').classList.remove('innerContainer-errorView');
   $('bottomBar').classList.remove('bottomBar-listView');
 };
 export const showList = () => {
   $('topBar').classList.remove('topBar-hidden');
   $('innerContainer').classList.add('innerContainer-listView');
   $('innerContainer').classList.remove('innerContainer-postView');
+  $('innerContainer').classList.remove('innerContainer-errorView');
   $('bottomBar').classList.add('bottomBar-listView');
 };
 export const showPost = () => {
   $('topBar').classList.remove('topBar-hidden');
   $('innerContainer').classList.remove('innerContainer-listView');
   $('innerContainer').classList.add('innerContainer-postView');
+  $('innerContainer').classList.remove('innerContainer-errorView');
   $('bottomBar').classList.add('bottomBar-listView');
+};
+export const showError = () => {
+  $('topBar').classList.add('topBar-hidden');
+  $('innerContainer').classList.remove('innerContainer-listView');
+  $('innerContainer').classList.remove('innerContainer-postView');
+  $('innerContainer').classList.add('innerContainer-errorView');
+  $('bottomBar').classList.remove('bottomBar-listView');
 };
 
 export const showTopBarPerformance = () => {
@@ -150,7 +156,8 @@ export const fetchList = (path) => {
       };
       Ts.onComplete(tsCompRes);
       Ts.reload();
-    });
+    })
+    .catch(() => showError());
 };
 
 export const fetchPost = (path) => {
@@ -186,12 +193,13 @@ export const fetchPost = (path) => {
       setPostAreaHeight();
       setTotalPage();
       postScrollBtnBehavior();
-    });
+    })
+    .catch(() => showError());
 };
 
-window.addEventListener('touchstart', e => { isTap = true });
-window.addEventListener('touchmove', e => { isTap = false });
-window.addEventListener('touchend', e => { isTap ? isTap = true : isTap = false });
+// window.addEventListener('touchstart', e => { isTap = true });
+// window.addEventListener('touchmove', e => { isTap = false });
+// window.addEventListener('touchend', e => { isTap ? isTap = true : isTap = false });
 
 $('postView_contentShiftBtnNext').addEventListener(isTouch ? 'touchend' : 'click', () => {
   if (ready && isTap) {

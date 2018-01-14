@@ -40,7 +40,7 @@ ul {
   position: relative;
   top: 30px;
   height: calc(100vh - 60px);
-  width: 300vw;
+  width: 400vw;
   display: flex;
   flex-direction: row;
 }
@@ -49,6 +49,9 @@ ul {
 }
 .innerContainer-postView {
   left: -200vw;
+}
+.innerContainer-errorView {
+  left: -300vw;
 }
 .title {
   color: #1C1C1C;
