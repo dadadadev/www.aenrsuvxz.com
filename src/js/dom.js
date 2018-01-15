@@ -2,9 +2,6 @@ import setState from './setState';
 import router from './router';
 import { $, isTouch, isTap } from './util';
 
-// const isTouch = ('ontouchstart' in window) ? {} : false;
-
-// let isTap = true;
 let ready = true;
 let currentPage = 1;
 let totalPages = 1;
@@ -57,8 +54,6 @@ const scrollPrev = () => {
   });
 };
 
-// export const getPath = () => window.location.pathname;
-
 export const showFront = () => {
   $('topBar').classList.add('topBar-hidden');
   $('innerContainer').classList.remove('innerContainer-listView');
@@ -106,6 +101,7 @@ export const toggleModal = (e) => {
   $('bottomBar').classList.toggle('bottomBar-modal');
   $('bottomBar_navSign').classList.toggle('bottomBar_navSign-modal');
   $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
+  $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
 };
 export const closeModal = () => {
   $('bottomBar_navBtnContent').classList.remove('bottomBar_navBtnContent-modal');
@@ -116,7 +112,6 @@ export const closeModal = () => {
 export const bottomBarError = () => {
   $('bottomBar_navItems').classList.add('bottomBar_navItems-error');
 };
-
 export const fetchList = (path) => {
   $('listView').classList.add('hidden');
   const fragment = document.createDocumentFragment();
