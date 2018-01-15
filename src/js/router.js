@@ -1,4 +1,5 @@
 import * as $dom from './dom';
+import { $ } from './util';
 
 export default (state) => {
   if (state.view === 'front') {
@@ -11,6 +12,7 @@ export default (state) => {
     $dom.showPost();
   } else if (state.view === '404') {
     $dom.showError();
+    $dom.bottomBarError();
   }
 
   if (state.category === 'performance') $dom.showTopBarPerformance();

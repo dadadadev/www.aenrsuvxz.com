@@ -100,17 +100,21 @@ export const showTopBarUiux = () => {
   $('topBar_categoryItems').classList.add('topBar_categoryItems-uiux');
   $('topBar_categoryItems').classList.remove('topBar_categoryItems-performance', 'topBar_categoryItems-architecture');
 };
-
 export const toggleModal = (e) => {
   e.stopPropagation();
   $('bottomBar_navBtnContent').classList.toggle('bottomBar_navBtnContent-modal');
   $('bottomBar').classList.toggle('bottomBar-modal');
   $('bottomBar_navSign').classList.toggle('bottomBar_navSign-modal');
+  $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
 };
 export const closeModal = () => {
   $('bottomBar_navBtnContent').classList.remove('bottomBar_navBtnContent-modal');
   $('bottomBar').classList.remove('bottomBar-modal');
   $('bottomBar_navSign').classList.remove('bottomBar_navSign-modal');
+  $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
+};
+export const bottomBarError = () => {
+  $('bottomBar_navItems').classList.add('bottomBar_navItems-error');
 };
 
 export const fetchList = (path) => {
@@ -157,7 +161,10 @@ export const fetchList = (path) => {
       Ts.onComplete(tsCompRes);
       Ts.reload();
     })
-    .catch(() => showError());
+    .catch(() => {
+      showError();
+      bottomBarError();
+    });
 };
 
 export const fetchPost = (path) => {
@@ -194,7 +201,10 @@ export const fetchPost = (path) => {
       setTotalPage();
       postScrollBtnBehavior();
     })
-    .catch(() => showError());
+    .catch(() => {
+      showError();
+      bottomBarError();
+    });
 };
 
 // window.addEventListener('touchstart', e => { isTap = true });

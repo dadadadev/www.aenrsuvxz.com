@@ -55,6 +55,10 @@
     bottom: 30px;
     padding: 0;
     margin: 0;
+    &-error {
+      position: fixed;
+      bottom: 30px;
+    }
   }
   &_navItem {
     height: 25px;
