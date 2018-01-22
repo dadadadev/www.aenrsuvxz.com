@@ -1,5 +1,4 @@
 import * as $dom from './dom';
-import { $ } from './util';
 
 export default (state) => {
   if (state.view === 'front') {

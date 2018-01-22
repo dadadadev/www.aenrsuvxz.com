@@ -202,10 +202,6 @@ export const fetchPost = (path) => {
     });
 };
 
-// window.addEventListener('touchstart', e => { isTap = true });
-// window.addEventListener('touchmove', e => { isTap = false });
-// window.addEventListener('touchend', e => { isTap ? isTap = true : isTap = false });
-
 $('postView_contentShiftBtnNext').addEventListener(isTouch ? 'touchend' : 'click', () => {
   if (ready && isTap) {
     if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
