@@ -1,19 +1,15 @@
 {
   "name": "aenrsuvxz_local_dev",
-  "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "start": "npm run server:start | npm run postcss:start | npm run rollup:start",
+    "start": "lite-server --baseDir='dev-server' | npm run postcss:start | npm run rollup:start",
     "build": "npm run postcss:build && npm run rollup:build",
-    "server:start": "lite-server --baseDir='dev-server'",
     "postcss:start": "postcss src/css/input.css -o dev-server/style.css -w",
-    "rollup:start": "rollup -c -i src/js/input.js -o dev-server/app.js -w",
     "postcss:build": "NODE_ENV=production postcss src/css/input.css -o dist/style.css",
+    "rollup:start": "rollup -c -i src/js/input.js -o dev-server/app.js -w",
     "rollup:build": "NODE_ENV=production rollup -c -i src/js/input.js -o dist/app.js",
     "lint": "eslint src/js/*.js"
   },
-  "keywords": [],
-  "author": "dadada.dev",
+  "author": "dadadadev",
   "license": "MIT",
   "dependencies": {
     "smoothscroll-polyfill": "^0.4.0",

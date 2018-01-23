@@ -22,22 +22,20 @@ const setTotalPage = () => {
   totalPages = totalPage;
 };
 const postScrollBtnBehavior = () => {
-  setTimeout(() => {
-    const scrollPosition = $('postView_contentText').scrollLeft;
-    const contentWidth = $('postView_contentText').clientWidth;
-    const scrollWidth = $('postView_contentText').scrollWidth;
-    const targetWidth = scrollPosition + contentWidth + 50;
-    if (scrollPosition === 0) {
-      $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
-    } else {
-      $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
-      $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
-    }
-  }, 1000);
+  const scrollPosition = $('postView_contentText').scrollLeft;
+  const contentWidth = $('postView_contentText').clientWidth;
+  const scrollWidth = $('postView_contentText').scrollWidth;
+  const targetWidth = scrollPosition + contentWidth + 50;
+  if (scrollPosition === 0) {
+    $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
+    $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+  } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
+    $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+    $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
+  } else {
+    $('postView_contentShiftBtnPrev').classList.remove('postView_contentShiftBtn-hidden');
+    $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
+  }
 };
 const scrollNext = () => {
   $('postView_contentText').scrollBy({
@@ -161,7 +159,6 @@ export const fetchList = (path) => {
       bottomBarError();
     });
 };
-
 export const fetchPost = (path) => {
   $('postView').classList.add('hidden');
   currentPage = 1;
@@ -202,24 +199,26 @@ export const fetchPost = (path) => {
     });
 };
 
-$('postView_contentShiftBtnNext').addEventListener(isTouch ? 'touchend' : 'click', () => {
-  if (ready && isTap) {
-    if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
-    postScrollBtnBehavior();
-    scrollNext();
+$('postView_contentShiftBtnNext').addEventListener((isTouch && isTap) ? 'touchend' : 'click', () => {
+  if (ready && currentPage < totalPages) {
+    currentPage++;
     ready = false;
+    $('postView_contentCurrentPage').innerText = currentPage;
+    scrollNext();
     setTimeout(() => {
+      postScrollBtnBehavior();
       ready = true;
     }, 1000);
   }
 });
 $('postView_contentShiftBtnPrev').addEventListener(isTouch ? 'touchend' : 'click', () => {
-  if (ready && isTap) {
-    if (currentPage > 1) $('postView_contentCurrentPage').innerText = currentPage -= 1;
-    postScrollBtnBehavior();
-    scrollPrev();
+  if (ready && currentPage > 1) {
+    currentPage--;
     ready = false;
+    $('postView_contentCurrentPage').innerText = currentPage;
+    scrollPrev();
     setTimeout(() => {
+      postScrollBtnBehavior();
       ready = true;
     }, 1000);
   }
@@ -235,45 +234,45 @@ if (isTouch) {
     if (Math.abs(touchMoveX - touchStartX) > 10) e.preventDefault()
   });
   $('postView_contentText').addEventListener('touchend', (e) => {
-    if (touchStartX > touchMoveX && ready) {
-      if (touchStartX > (touchMoveX + 30)) {
-        if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
+    if (touchStartX > touchMoveX + 30 && currentPage < totalPages && ready) {
+      currentPage++;
+      ready = false;
+      $('postView_contentCurrentPage').innerText = currentPage;
+      scrollNext();
+      setTimeout(() => {
         postScrollBtnBehavior();
-        scrollNext();
-        ready = false;
-        setTimeout(() => {
-          ready = true;
-        }, 1000);
-      }
-    } else if (touchStartX < touchMoveX && ready) {
-      if ((touchStartX + 30) < touchMoveX) {
-        if (currentPage > 1) $('postView_contentCurrentPage').innerText = currentPage -= 1;
+        ready = true;
+      }, 1000);
+    } else if (touchStartX + 30 < touchMoveX && currentPage > 1 && ready) {
+      currentPage--;
+      ready = false;
+      $('postView_contentCurrentPage').innerText = currentPage;
+      scrollPrev();
+      setTimeout(() => {
         postScrollBtnBehavior();
-        scrollPrev();
-        ready = false;
-        setTimeout(() => {
-          ready = true;
-        }, 1000);
-      }
+        ready = true;
+      }, 1000);
     }
   });
 } else {
   $('postView_contentText').addEventListener('wheel', (e) => {
     e.preventDefault();
-    if (e.deltaX > 20 && ready) {
-      if (currentPage < totalPages) $('postView_contentCurrentPage').innerText = currentPage += 1;
-      postScrollBtnBehavior();
-      scrollNext();
+    if (e.deltaX > 20 && currentPage < totalPages && ready) {
+      currentPage++;
       ready = false;
+      $('postView_contentCurrentPage').innerText = currentPage;
+      scrollNext();
       setTimeout(() => {
+        postScrollBtnBehavior();
         ready = true;
       }, 1000);
-    } else if (e.deltaX < -20 && ready) {
-      if (currentPage > 1) $('postView_contentCurrentPage').innerText = currentPage -= 1;
-      postScrollBtnBehavior();
-      scrollPrev();
+    } else if (e.deltaX < -20 && currentPage > 1 && ready) {
+      currentPage--;
       ready = false;
+      $('postView_contentCurrentPage').innerText = currentPage;
+      scrollPrev();
       setTimeout(() => {
+        postScrollBtnBehavior();
         ready = true;
       }, 1000);
     }
