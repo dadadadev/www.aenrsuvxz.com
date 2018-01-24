@@ -17,9 +17,8 @@ const setTotalPage = () => {
   const viewAreaWidth = $('postView_contentText').clientWidth + 65;
   const restWidth = scrollWidth % viewAreaWidth;
   const _scrollWidth = scrollWidth - restWidth;
-  const totalPage = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
-  $('postView_contentTotalPage').innerText = ` / ${totalPage}`;
-  totalPages = totalPage;
+  totalPages = (_scrollWidth + viewAreaWidth) / viewAreaWidth;
+  $('postView_contentTotalPage').innerText = ` / ${totalPages}`;
 };
 const postScrollBtnBehavior = () => {
   const scrollPosition = $('postView_contentText').scrollLeft;
@@ -50,6 +49,27 @@ const scrollPrev = () => {
     top: 0,
     left: -($('postView_contentText').clientWidth + 65),
   });
+};
+const postScrollBehavior = (action) => {
+  if (action === 'next') {
+    currentPage++;
+    ready = false;
+    $('postView_contentCurrentPage').innerText = `表示中のページ： ${currentPage}`;
+    scrollNext();
+    setTimeout(() => {
+      postScrollBtnBehavior();
+      ready = true;
+    }, 1000);
+  } else if (action === 'prev') {
+    currentPage--;
+    ready = false;
+    $('postView_contentCurrentPage').innerText = `表示中のページ： ${currentPage}`;
+    scrollPrev();
+    setTimeout(() => {
+      postScrollBtnBehavior();
+      ready = true;
+    }, 1000);
+  }
 };
 
 export const showFront = () => {
@@ -93,6 +113,7 @@ export const showTopBarUiux = () => {
   $('topBar_categoryItems').classList.add('topBar_categoryItems-uiux');
   $('topBar_categoryItems').classList.remove('topBar_categoryItems-performance', 'topBar_categoryItems-architecture');
 };
+
 export const toggleModal = (e) => {
   e.stopPropagation();
   $('bottomBar_navBtnContent').classList.toggle('bottomBar_navBtnContent-modal');
@@ -110,6 +131,7 @@ export const closeModal = () => {
 export const bottomBarError = () => {
   $('bottomBar_navItems').classList.add('bottomBar_navItems-error');
 };
+
 export const fetchList = (path) => {
   $('listView').classList.add('hidden');
   const fragment = document.createDocumentFragment();
@@ -148,8 +170,11 @@ export const fetchList = (path) => {
     })
     .then(() => {
       const tsCompRes = (res) => {
-        res.code === 0 ? $('listView').classList.remove('hidden') : false
-        res.code === -2 ? $('listView').classList.remove('hidden') : false
+        if (res.code === -2) {
+          setTimeout(() => $('listView').classList.remove('hidden'), 2000);
+        } else {
+          $('listView').classList.remove('hidden');
+        }
       };
       Ts.onComplete(tsCompRes);
       Ts.reload();
@@ -173,17 +198,17 @@ export const fetchPost = (path) => {
         $('postView_contentText').removeChild($('postView_contentText').firstChild);
       }
       $('postView_contentText').innerHTML = json.text;
-      $('postView_contentCurrentPage').innerText = '1';
+      $('postView_contentCurrentPage').innerText = `表示中のページ： ${currentPage}`;
       $('postView_contentTotalPage').innerText = ' / 0';
-      $('postView_contentCurrentPagePre').classList.remove('defs');
-      $('postView_contentCurrentPage').classList.remove('defs');
-      $('postView_contentTotalPage').classList.remove('defs');
       $('postView_contentText').scrollTo(0, 0);
     })
     .then(() => {
       const tsCompRes = (res) => {
-        res.code === 0 ? $('postView').classList.remove('hidden') : false
-        res.code === -2 ? $('postView').classList.remove('hidden') : false
+        if (res.code === -2) {
+          setTimeout(() => $('postView').classList.remove('hidden'), 2000);
+        } else {
+          $('postView').classList.remove('hidden');
+        }
       };
       Ts.onComplete(tsCompRes);
       Ts.reload();
@@ -192,89 +217,46 @@ export const fetchPost = (path) => {
       setPostAreaHeight();
       setTotalPage();
       postScrollBtnBehavior();
+      $('postView_contentShiftBtnNext').addEventListener((isTouch && isTap) ? 'touchend' : 'click', () => {
+        if (ready && currentPage < totalPages) {
+          postScrollBehavior('next');
+        }
+      });
+      $('postView_contentShiftBtnPrev').addEventListener(isTouch ? 'touchend' : 'click', () => {
+        if (ready && currentPage > 1) {
+          postScrollBehavior('prev');
+        }
+      });
+      if (isTouch) {
+        let touchStartX;
+        let touchMoveX;
+        $('postView_contentText').addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].pageX;
+        });
+        $('postView_contentText').addEventListener('touchmove', (e) => {
+          touchMoveX = e.changedTouches[0].pageX;
+          if (Math.abs(touchMoveX - touchStartX) > 10) e.preventDefault();
+        });
+        $('postView_contentText').addEventListener('touchend', () => {
+          if (touchStartX > touchMoveX + 30 && currentPage < totalPages && ready) {
+            postScrollBehavior('next');
+          } else if (touchStartX + 30 < touchMoveX && currentPage > 1 && ready) {
+            postScrollBehavior('prev');
+          }
+        });
+      } else {
+        $('postView_contentText').addEventListener('wheel', (e) => {
+          e.preventDefault();
+          if (e.deltaX > 20 && currentPage < totalPages && ready) {
+            postScrollBehavior('next');
+          } else if (e.deltaX < -20 && currentPage > 1 && ready) {
+            postScrollBehavior('prev');
+          }
+        });
+      }
     })
     .catch(() => {
       showError();
       bottomBarError();
     });
 };
-
-$('postView_contentShiftBtnNext').addEventListener((isTouch && isTap) ? 'touchend' : 'click', () => {
-  if (ready && currentPage < totalPages) {
-    currentPage++;
-    ready = false;
-    $('postView_contentCurrentPage').innerText = currentPage;
-    scrollNext();
-    setTimeout(() => {
-      postScrollBtnBehavior();
-      ready = true;
-    }, 1000);
-  }
-});
-$('postView_contentShiftBtnPrev').addEventListener(isTouch ? 'touchend' : 'click', () => {
-  if (ready && currentPage > 1) {
-    currentPage--;
-    ready = false;
-    $('postView_contentCurrentPage').innerText = currentPage;
-    scrollPrev();
-    setTimeout(() => {
-      postScrollBtnBehavior();
-      ready = true;
-    }, 1000);
-  }
-});
-if (isTouch) {
-  let touchStartX;
-  let touchMoveX;
-  $('postView_contentText').addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].pageX;
-  });
-  $('postView_contentText').addEventListener('touchmove', (e) => {
-    touchMoveX = e.changedTouches[0].pageX;
-    if (Math.abs(touchMoveX - touchStartX) > 10) e.preventDefault()
-  });
-  $('postView_contentText').addEventListener('touchend', (e) => {
-    if (touchStartX > touchMoveX + 30 && currentPage < totalPages && ready) {
-      currentPage++;
-      ready = false;
-      $('postView_contentCurrentPage').innerText = currentPage;
-      scrollNext();
-      setTimeout(() => {
-        postScrollBtnBehavior();
-        ready = true;
-      }, 1000);
-    } else if (touchStartX + 30 < touchMoveX && currentPage > 1 && ready) {
-      currentPage--;
-      ready = false;
-      $('postView_contentCurrentPage').innerText = currentPage;
-      scrollPrev();
-      setTimeout(() => {
-        postScrollBtnBehavior();
-        ready = true;
-      }, 1000);
-    }
-  });
-} else {
-  $('postView_contentText').addEventListener('wheel', (e) => {
-    e.preventDefault();
-    if (e.deltaX > 20 && currentPage < totalPages && ready) {
-      currentPage++;
-      ready = false;
-      $('postView_contentCurrentPage').innerText = currentPage;
-      scrollNext();
-      setTimeout(() => {
-        postScrollBtnBehavior();
-        ready = true;
-      }, 1000);
-    } else if (e.deltaX < -20 && currentPage > 1 && ready) {
-      currentPage--;
-      ready = false;
-      $('postView_contentCurrentPage').innerText = currentPage;
-      scrollPrev();
-      setTimeout(() => {
-        postScrollBtnBehavior();
-        ready = true;
-      }, 1000);
-    }
-  });
-}
