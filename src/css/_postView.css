@@ -43,6 +43,9 @@
       columns: 2;
     }
   }
+  /* &_contentText:last-child p {
+    margin-bottom: 0
+  } */
   &_contentShiftBtn {
     width: 8%;
     display: flex;

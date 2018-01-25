@@ -24,8 +24,11 @@ const postScrollBtnBehavior = () => {
   const scrollPosition = $('postView_contentText').scrollLeft;
   const contentWidth = $('postView_contentText').clientWidth;
   const scrollWidth = $('postView_contentText').scrollWidth;
-  const targetWidth = scrollPosition + contentWidth + 50;
-  if (scrollPosition === 0) {
+  const targetWidth = scrollPosition + contentWidth + 65;
+  if (scrollPosition === 0 && targetWidth >= scrollWidth) {
+    $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
+    $('postView_contentShiftBtnNext').classList.add('postView_contentShiftBtn-hidden');
+  } else if (scrollPosition === 0 && targetWidth < scrollWidth) {
     $('postView_contentShiftBtnPrev').classList.add('postView_contentShiftBtn-hidden');
     $('postView_contentShiftBtnNext').classList.remove('postView_contentShiftBtn-hidden');
   } else if (scrollPosition !== 0 && targetWidth < scrollWidth) {
