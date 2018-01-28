@@ -5,14 +5,14 @@ import { $, isTouch, isTap } from './util';
 class fetchData {
   constructor(state) {
     this.state = state;
+    this.view = state.view;
+    this.target = state.view === 'list' ? $('listView') : $('postView');
     this.promiseData = fetch(`https://api.aenrsuvxz.com${state.path}.json`)
       .then(res => res.json())
       .catch(() => {
         this.state.view = '404';
         router(this.state);
       });
-    this.view = state.view;
-    this.target = state.view === 'list' ? $('listView') : $('postView');
   }
   init() {
     window.scrollTo(0, 0);
