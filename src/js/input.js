@@ -2,20 +2,27 @@ import 'whatwg-fetch';
 import smoothscroll from 'smoothscroll-polyfill';
 import setState from './setState';
 import router from './router';
-import * as $dom from './dom';
 import { $, isTouch, isTap } from './util';
 
-document.addEventListener('DOMContentLoaded', () => {
-  /* @license smoothscroll v0.4.0 - 2017 - Dustan Kasten, Jeremias Menichelli - MIT License */
-  smoothscroll.polyfill();
-
-  const state = setState(window.location.pathname);
-  window.history.replaceState(state, null, state.path);
+const toggleModal = (e) => {
+  e.stopPropagation();
+  $('bottomBar_navBtnContent').classList.toggle('bottomBar_navBtnContent-modal');
+  $('bottomBar').classList.toggle('bottomBar-modal');
+  $('bottomBar_navSign').classList.toggle('bottomBar_navSign-modal');
+  $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
+};
+const closeModal = () => {
+  $('bottomBar_navBtnContent').classList.remove('bottomBar_navBtnContent-modal');
+  $('bottomBar').classList.remove('bottomBar-modal');
+  $('bottomBar_navSign').classList.remove('bottomBar_navSign-modal');
+  $('bottomBar_navItems').classList.remove('bottomBar_navItems-error');
+};
+const eventListen = () => {
   window.addEventListener('popstate', e => router(e.state));
 
-  $('bottomBar_navBtn').addEventListener((isTouch && isTap) ? 'touchend' : 'click', e => $dom.toggleModal(e));
-  $('bottomBar_navSign').addEventListener((isTouch && isTap) ? 'touchend' : 'click', e => $dom.toggleModal(e));
-  $('bottomBar').addEventListener((isTouch && isTap) ? 'touchend' : 'click', () => $dom.closeModal());
+  $('bottomBar_navBtn').addEventListener((isTouch && isTap) ? 'touchend' : 'click', e => toggleModal(e));
+  $('bottomBar_navSign').addEventListener((isTouch && isTap) ? 'touchend' : 'click', e => toggleModal(e));
+  $('bottomBar').addEventListener((isTouch && isTap) ? 'touchend' : 'click', () => closeModal());
 
   const anchors = document.getElementsByTagName('a');
   for (anchor of anchors) {
@@ -24,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target.classList.contains('targetBlank')) {
         window.open(e.target.href);
       } else if (window.location.pathname === e.target.getAttribute('href')) {
-        $dom.closeModal();
+        closeModal();
       } else {
         const targetState = setState(e.target.getAttribute('href'));
         window.history.pushState(targetState, null, targetState.path);
@@ -32,5 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  /* @license smoothscroll v0.4.0 - 2017 - Dustan Kasten, Jeremias Menichelli - MIT License */
+  smoothscroll.polyfill();
+  const state = setState(window.location.pathname);
+  window.history.replaceState(state, null, state.path);
+  eventListen();
   router(state);
 });
